@@ -12,7 +12,17 @@
             </el-form-item>
         </el-form>
 
-        <vue-good-table max-height="800px" :columns="columns" :rows="rows" :line-numbers="true" />
+        <vue-good-table max-height="800px" :columns="columns" :rows="rows" :line-numbers="true"
+            @on-row-click="onRowClick">
+            <template slot="table-row" slot-scope="props">
+                <span v-if="props.column.field === 'details'">
+                    <button class="ant-btn ant-btn-red" @click="doSomething(props.row)">删 除 策 略</button>
+                </span>
+                <span v-else>
+                    {{ props.formattedRow[props.column.field] }}
+                </span>
+            </template>
+        </vue-good-table>
     </div>
 </template>
 
@@ -43,6 +53,11 @@ export default {
                     field: 'score',
                     type: 'percentage',
                 },
+                {
+                    label: "Details",
+                    field: "details",
+                    filterable: true
+                }
             ],
             rows: [
                 { id: 1, name: "Finnegan", age: 20, createdAt: '2010-10-05', score: 0.31343 },
@@ -65,7 +80,13 @@ export default {
     methods: {
         onSubmit() {
             console.log('submit!');
+        },
+        onRowClick(params) {
+        },
+        doSomething(params) {
+            alert(params['id']);
         }
+
     }
 }
 </script>
@@ -89,5 +110,52 @@ li {
 
 a {
     color: #42b983;
+}
+
+.ant-btn {
+    line-height: 1.499;
+    position: relative;
+    display: inline-block;
+    font-weight: 400;
+    white-space: nowrap;
+    text-align: center;
+    background-image: none;
+    border: 1px solid transparent;
+    -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+    cursor: pointer;
+    -webkit-transition: all .3s cubic-bezier(.645, .045, .355, 1);
+    transition: all .3s cubic-bezier(.645, .045, .355, 1);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    height: 22px;
+    padding: 0 8px;
+    font-size: 10px;
+    border-radius: 4px;
+    color: rgba(0, 0, 0, 0.65);
+    background-color: #fff;
+    border-color: #d9d9d9;
+}
+
+.ant-btn-primary {
+    color: #fff;
+    background-color: #1890ff;
+    border-color: #1890ff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+}
+
+.ant-btn-red {
+    color: #fff;
+    background-color: #FF5A44;
+    border-color: #FF5A44;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
 }
 </style>
